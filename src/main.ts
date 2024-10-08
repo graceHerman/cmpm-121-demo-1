@@ -21,11 +21,26 @@ let growthRate: number = 0;
 // keep track of time between frames
 let start: number | null = null;
 
-// Make three purchased items
-const upgrades = {
-  Healing: { cost: 10, rate: 0.1, purchased: 0 },
-  Weapon: { cost: 100, rate: 2.0, purchased: 0 },
-  Armor: { cost: 1000, rate: 50.0, purchased: 0 },
+// Added code from slide instructions
+interface Item {
+  name: string,
+  cost: number,
+  rate: number
+};
+
+// Purchased avaialble items
+const availableItems : Item[] = [
+  {name: "Potions", cost: 10, rate: 0.1},
+  {name: "Weapons", cost: 100, rate: 2},
+  {name: "Armor", cost: 1000, rate: 50},
+];
+
+// Purchased Items count 
+// Object to track the number of purchases
+const purchasesCount: { [key: string]: number } = {
+  Potions: 0,
+  Weapons: 0,
+  Armor: 0
 };
 
 // Create a div element to display the current counter value
@@ -38,12 +53,6 @@ const button = document.createElement("button");
 // Make button an emoji, let's use the game controller emoji
 button.innerHTML = "🎮 Play Now";
 
-/*//Step 5:
-// Create a new button for upgrade purchase
-const upgradeButton = document.createElement("button");
-upgradeButton.innerHTML = "💡 Buy Upgrade (+1 growth/sec)"; // Lightbulb emoji for the upgrade
-upgradeButton.disabled = true;*/
-
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
 growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
@@ -52,12 +61,12 @@ growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
   upgradesDisplay.innerHTML = `
-    Healing purchased: ${upgrades.Healing.purchased}<br>
-    Weapon purchased: ${upgrades.Weapon.purchased}<br>
-    Armor purchased: ${upgrades.Armor.purchased}
+    Potions purchased: ${purchasesCount.Potions}<br>
+    Weapons purchased: ${purchasesCount.Weapons}<br>
+    Armor purchased: ${purchasesCount.Armor}
   `;
 };
-updatedUpgradesDisplay();
+updatedUpgradesDisplay(); 
 
 // Add event listener for button
 button.addEventListener("click", () => {
@@ -66,62 +75,42 @@ button.addEventListener("click", () => {
   checkUpgradeAvailability();
 });
 
-/*// Step 3:
-// make a counter increment for every second even when the player is not clicking
-setInterval(() => {
-  counter++;
-  counterDisplay.innerHTML = counter + " levels completed";
-}, 1000);*/
-
 // Create upgrade buttons dynamically for each item
 const upgradeButtons: HTMLButtonElement[] = [];
 
 // Go through each items for upgrades
-for (const item in upgrades) {
-  const key = item as keyof typeof upgrades;
+// Go through each item for upgrades
+availableItems.forEach((item) => {
   const upgradeButton = document.createElement("button");
-  upgradeButton.innerHTML = `💡 Buy ${item} (+${upgrades[key].rate} levels/sec)`;
+  upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec)`;
   upgradeButton.disabled = true;
 
-  // Make an addEventListener to go through units/sec for each item in upgrades
+  // Event listener for buying upgrades
   upgradeButton.addEventListener("click", () => {
-    if (counter >= upgrades[key].cost) {
-      counter -= upgrades[key].cost;
-      upgrades[key].purchased++;
-      growthRate += upgrades[key].rate;
+    if (counter >= item.cost) {
+      counter -= item.cost;
+      purchasesCount[item.name]++; // Increment purchase count for the item
+      growthRate += item.rate;
 
-      // Increase cost for next purcahse
-      upgrades[key].cost *= 1.5;
+      // Increase cost for next purchase
+      item.cost *= 1.5; // Increase cost by a factor of 1.15
 
       counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
       growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
-      updatedUpgradesDisplay(); // display items
-      checkUpgradeAvailability(); // check button avaialabilty
+      updatedUpgradesDisplay(); // Update the display of purchases
+      checkUpgradeAvailability(); // Check button availability
     }
   });
-  upgradeButtons.push(upgradeButton);
-}
 
-// checks if upgraded buttons should be avaiable/enabled
+  upgradeButtons.push(upgradeButton);
+});
+
+// checks if upgraded buttons should be available/enabled
 const checkUpgradeAvailability = () => {
   upgradeButtons.forEach((button, index) => {
-    const items = Object.keys(upgrades)[index];
-    const keys = items as keyof typeof upgrades;
-    button.disabled = counter < upgrades[keys].cost;
+    button.disabled = counter < availableItems[index].cost;
   });
 };
-
-/*// Step 5:
-// Displays the amount of levels being completed 
-// for every 10 clicks on the button, the upgrade button becomes available 
-upgradeButton.addEventListener("click", () => {
-  if (counter >= 10) {
-    counter -= 10;
-    growthRate += 1;
-    counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
-    upgradeButton.disabled = counter < 10;
-  }
-});*/
 
 function updateCounter(timestamp: number) {
   if (start !== null) {
