@@ -23,9 +23,9 @@ let start: number | null = null;
 
 // Make three purchased items
 const upgrades = {
-  A: { cost: 10, rate: 0.1, purchased: 0 },
-  B: { cost: 100, rate: 2.0, purchased: 0 },
-  C: { cost: 1000, rate: 50.0, purchased: 0 },
+  Healing: { cost: 10, rate: 0.1, purchased: 0 },
+  Weapon: { cost: 100, rate: 2.0, purchased: 0 },
+  Armor: { cost: 1000, rate: 50.0, purchased: 0 },
 };
 
 // Create a div element to display the current counter value
@@ -46,15 +46,15 @@ upgradeButton.disabled = true;*/
 
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
-//growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
 
 // Create display for the purchased counts for items
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
   upgradesDisplay.innerHTML = `
-    Healing purchased: ${upgrades.A.purchased}<br>
-    Weapon purchased: ${upgrades.B.purchased}<br>
-    Armor purchased: ${upgrades.C.purchased}
+    Healing purchased: ${upgrades.Healing.purchased}<br>
+    Weapon purchased: ${upgrades.Weapon.purchased}<br>
+    Armor purchased: ${upgrades.Armor.purchased}
   `;
 };
 updatedUpgradesDisplay();
@@ -89,6 +89,10 @@ for (const item in upgrades) {
       counter -= upgrades[key].cost;
       upgrades[key].purchased++;
       growthRate += upgrades[key].rate;
+
+      // Increase cost for next purcahse
+      upgrades[key].cost *= 1.5;
+
       counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
       growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
       updatedUpgradesDisplay(); // display items
