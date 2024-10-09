@@ -10,15 +10,15 @@ header.innerHTML = gameName;
 app.append(header);
 
 // --------------------------------------------------------
-// My edits
+// My edits for the programming assignment
 
-// Make a counter number
+// Create a counter number
 let counter: number = 0;
 
-// Make a growth rate
+// Create a growth rate
 let growthRate: number = 0;
 
-// keep track of time between frames
+// Create a variable to keep track of time between frames
 let start: number | null = null;
 
 // Added code from slide instructions
@@ -35,8 +35,8 @@ const availableItems: Item[] = [
   { name: "Armor", cost: 1000, rate: 50 },
 ];
 
-// Purchased Items count
-// Object to track the number of purchases
+// Purchased items count
+// Used to track the number of purchases
 const purchasesCount: { [key: string]: number } = {
   Potions: 0,
   Weapons: 0,
@@ -47,7 +47,7 @@ const purchasesCount: { [key: string]: number } = {
 const counterDisplay = document.createElement("div");
 counterDisplay.innerHTML = counter.toFixed(2) + " levels completed"; // initial message
 
-// Create the button
+// Create the button with the emoji
 const button = document.createElement("button");
 
 // Make button an emoji, let's use the game controller emoji
@@ -62,14 +62,15 @@ growthRateDisplay.innerHTML =
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
   upgradesDisplay.innerHTML = `
-    Potions purchased: ${purchasesCount.Potions}<br>
-    Weapons purchased: ${purchasesCount.Weapons}<br>
-    Armor purchased: ${purchasesCount.Armor}
+    ${availableItems[0].name} purchased: ${purchasesCount.Potions}<br>
+    ${availableItems[1].name} purchased: ${purchasesCount.Weapons}<br>
+    ${availableItems[2].name} purchased: ${purchasesCount.Armor}
   `;
 };
 updatedUpgradesDisplay();
 
-// Add event listener for button
+// Add event listener for emoji button
+// Every time the button is clicked, the counter is added by 1 
 button.addEventListener("click", () => {
   counter++;
   counterDisplay.innerHTML = counter.toFixed(2) + " levels completed"; // updated message
@@ -79,14 +80,17 @@ button.addEventListener("click", () => {
 // Create upgrade buttons dynamically for each item
 const upgradeButtons: HTMLButtonElement[] = [];
 
-// Go through each items for upgrades
 // Go through each item for upgrades
+// Display the upgrade button for each item 
 availableItems.forEach((item) => {
   const upgradeButton = document.createElement("button");
   upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec)`;
   upgradeButton.disabled = true;
 
-  // Event listener for buying upgrades
+  // Create event listener for the event listener for buying upgrades
+  // counter has to be less than the cost
+  // if it is less than the cost then the cost is subtracted to the counter, 
+  // and the purchase number and the growth rate increases
   upgradeButton.addEventListener("click", () => {
     if (counter >= item.cost) {
       counter -= item.cost;
@@ -94,11 +98,13 @@ availableItems.forEach((item) => {
       growthRate += item.rate;
 
       // Increase cost for next purchase
-      item.cost *= 1.5; // Increase cost by a factor of 1.15
+      // Increase it by a factor of 1.5
+      item.cost *= 1.5;
 
+      // Display the counter and growth rate display
       counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
-      growthRateDisplay.innerHTML =
-        "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
     }
@@ -114,6 +120,7 @@ const checkUpgradeAvailability = () => {
   });
 };
 
+// calculates the time in units/secs
 function updateCounter(timestamp: number) {
   if (start !== null) {
     // Calculate the time difference since the last frame
@@ -124,7 +131,6 @@ function updateCounter(timestamp: number) {
 
     // Update the display
     counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
-    //upgradeButton.disabled = counter < 10;
     checkUpgradeAvailability();
   }
 
@@ -153,13 +159,14 @@ container.style.alignItems = "center";
 container.style.justifyContent = "center";
 container.style.height = "100vh"; // Full height of the viewport
 
-// Append the button to the body of the document
+// Append the buttons and the displays to the body of the document with container
 container.appendChild(button);
 upgradeButtons.forEach((button) => container.appendChild(button));
 container.appendChild(counterDisplay);
 container.appendChild(growthRateDisplay);
 container.appendChild(upgradesDisplay);
 
+// Append the container
 document.body.appendChild(container);
 
 // file path: '/Users/gracelilanhermangmail.com/Desktop/Fall 2024/121/cmpm-121-demo-1'
