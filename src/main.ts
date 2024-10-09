@@ -26,13 +26,16 @@ interface Item {
   name: string;
   cost: number;
   rate: number;
+  description: string;
 }
 
 // Purchased avaialble items
 const availableItems: Item[] = [
-  { name: "Potions", cost: 10, rate: 0.1 },
-  { name: "Weapons", cost: 100, rate: 2 },
-  { name: "Armor", cost: 1000, rate: 50 },
+  { name: "Potions", cost: 10, rate: 0.1, description: "A magical liguid that heals players"},
+  { name: "Weapons", cost: 100, rate: 2, description: "Sharp metal tool for slaying monsters" },
+  { name: "Armor", cost: 1000, rate: 50, description: "Outfit cloaked in metal to increase defense" },
+  { name: "Spells", cost: 5000, rate: 100, description: "A piece of partchmant for learning a magical ability" },
+  { name: "Dragons", cost: 10000, rate: 150, description: "A small but mighty dragon that can assist in battle" }
 ];
 
 // Purchased items count
@@ -41,6 +44,8 @@ const purchasesCount: { [key: string]: number } = {
   Potions: 0,
   Weapons: 0,
   Armor: 0,
+  Spells: 0,
+  Dragons: 0
 };
 
 // Create a div element to display the current counter value
@@ -64,13 +69,15 @@ const updatedUpgradesDisplay = () => {
   upgradesDisplay.innerHTML = `
     ${availableItems[0].name} purchased: ${purchasesCount.Potions}<br>
     ${availableItems[1].name} purchased: ${purchasesCount.Weapons}<br>
-    ${availableItems[2].name} purchased: ${purchasesCount.Armor}
+    ${availableItems[2].name} purchased: ${purchasesCount.Armor}<br>
+    ${availableItems[3].name} purchased: ${purchasesCount.Armor}<br>
+    ${availableItems[4].name} purchased: ${purchasesCount.Armor}
   `;
 };
 updatedUpgradesDisplay();
 
 // Add event listener for emoji button
-// Every time the button is clicked, the counter is added by 1 
+// Every time the button is clicked, the counter is added by 1
 button.addEventListener("click", () => {
   counter++;
   counterDisplay.innerHTML = counter.toFixed(2) + " levels completed"; // updated message
@@ -81,15 +88,15 @@ button.addEventListener("click", () => {
 const upgradeButtons: HTMLButtonElement[] = [];
 
 // Go through each item for upgrades
-// Display the upgrade button for each item 
+// Display the upgrade button for each item
 availableItems.forEach((item) => {
   const upgradeButton = document.createElement("button");
-  upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec)`;
+  upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec) - ${item.description}`;
   upgradeButton.disabled = true;
 
   // Create event listener for the event listener for buying upgrades
   // counter has to be less than the cost
-  // if it is less than the cost then the cost is subtracted to the counter, 
+  // if it is less than the cost then the cost is subtracted to the counter,
   // and the purchase number and the growth rate increases
   upgradeButton.addEventListener("click", () => {
     if (counter >= item.cost) {
