@@ -23,24 +23,24 @@ let start: number | null = null;
 
 // Added code from slide instructions
 interface Item {
-  name: string,
-  cost: number,
-  rate: number
-};
+  name: string;
+  cost: number;
+  rate: number;
+}
 
 // Purchased avaialble items
-const availableItems : Item[] = [
-  {name: "Potions", cost: 10, rate: 0.1},
-  {name: "Weapons", cost: 100, rate: 2},
-  {name: "Armor", cost: 1000, rate: 50},
+const availableItems: Item[] = [
+  { name: "Potions", cost: 10, rate: 0.1 },
+  { name: "Weapons", cost: 100, rate: 2 },
+  { name: "Armor", cost: 1000, rate: 50 },
 ];
 
-// Purchased Items count 
+// Purchased Items count
 // Object to track the number of purchases
 const purchasesCount: { [key: string]: number } = {
   Potions: 0,
   Weapons: 0,
-  Armor: 0
+  Armor: 0,
 };
 
 // Create a div element to display the current counter value
@@ -55,7 +55,8 @@ button.innerHTML = "🎮 Play Now";
 
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
-growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+growthRateDisplay.innerHTML =
+  "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
 
 // Create display for the purchased counts for items
 const upgradesDisplay = document.createElement("div");
@@ -66,7 +67,7 @@ const updatedUpgradesDisplay = () => {
     Armor purchased: ${purchasesCount.Armor}
   `;
 };
-updatedUpgradesDisplay(); 
+updatedUpgradesDisplay();
 
 // Add event listener for button
 button.addEventListener("click", () => {
@@ -96,7 +97,8 @@ availableItems.forEach((item) => {
       item.cost *= 1.5; // Increase cost by a factor of 1.15
 
       counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
-      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+      growthRateDisplay.innerHTML =
+        "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
     }
