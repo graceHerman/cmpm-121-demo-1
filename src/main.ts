@@ -22,6 +22,7 @@ let growthRate: number = 0;
 let start: number | null = null;
 
 // Added code from slide instructions
+// included a description
 interface Item {
   name: string;
   cost: number;
@@ -31,11 +32,11 @@ interface Item {
 
 // Purchased avaialble items
 const availableItems: Item[] = [
-  { name: "Potions", cost: 10, rate: 0.1, description: "A magical liguid that heals players"},
+  { name: "Potions", cost: 10, rate: 0.1, description: "A magical liguid that heals players" },
   { name: "Weapons", cost: 100, rate: 2, description: "Sharp metal tool for slaying monsters" },
-  { name: "Armor", cost: 1000, rate: 50, description: "Outfit cloaked in metal to increase defense" },
+  { name: "Armor", cost: 1000, rate: 50, description: "Chest plate cloaked in metal to increase defense" },
   { name: "Spells", cost: 5000, rate: 100, description: "A piece of partchmant for learning a magical ability" },
-  { name: "Dragons", cost: 10000, rate: 150, description: "A small but mighty dragon that can assist in battle" }
+  { name: "Dragons", cost: 10000, rate: 150, description: "Small but mighty dragon that can assist in battle" },
 ];
 
 // Purchased items count
@@ -45,7 +46,7 @@ const purchasesCount: { [key: string]: number } = {
   Weapons: 0,
   Armor: 0,
   Spells: 0,
-  Dragons: 0
+  Dragons: 0,
 };
 
 // Create a div element to display the current counter value
@@ -110,7 +111,8 @@ availableItems.forEach((item) => {
 
       // Display the counter and growth rate display
       counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
-      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+      growthRateDisplay.innerHTML =
+        "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
 
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
