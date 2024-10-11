@@ -15,7 +15,7 @@ app.append(header);
 // Make a counter number
 let counter: number = 0;
 
-// keep track of time between frames 
+// keep track of time between frames
 // Make a growth rate
 let growthRate: number = 0;
 // keep track of time between frames
