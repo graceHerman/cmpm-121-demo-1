@@ -13,13 +13,13 @@ app.append(header);
 // My edits for the programming assignment
 
 // Create a counter number
-let counter: number = 0;
+let clickCounter: number = 0;
 
 // Create a growth rate
 let growthRate: number = 0;
 
 // Create a variable to keep track of time between frames
-let start: number | null = null;
+let lastTimeStamp: number | null = null;
 
 // Added code from slide instructions
 // included a description
@@ -76,7 +76,7 @@ const purchasesCount: { [key: string]: number } = {
 
 // Create div element to display the current counter value
 const counterDisplay = document.createElement("div");
-counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
+counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
 
 // Create the button with the emoji
 // Redesign the button
@@ -86,30 +86,34 @@ button.style.fontSize = "2em";
 button.style.padding = "20px";
 button.style.borderRadius = "15px";
 
-
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
 growthRateDisplay.innerHTML =
   "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
 
+const PURCHASED_SUFFIX = " purchased: ";
+
+// Helper Function
+const purchaseDisplayText = (item: Item, count: number) => {
+    return `${item.name}${PURCHASED_SUFFIX}${count}<br>`;
+};
+
 // Create display for purchased counts for items
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
-  upgradesDisplay.innerHTML = `
-    ${availableItems[0].name} purchased: ${purchasesCount.Potions}<br>
-    ${availableItems[1].name} purchased: ${purchasesCount.Weapons}<br>
-    ${availableItems[2].name} purchased: ${purchasesCount.Armor}<br>
-    ${availableItems[3].name} purchased: ${purchasesCount.Armor}<br>
-    ${availableItems[4].name} purchased: ${purchasesCount.Armor}
-  `;
+  const displayText = availableItems.map(item => 
+    purchaseDisplayText(item, purchasesCount[item.name])
+    ).join('');
+
+    upgradesDisplay.innerHTML = displayText;
 };
 updatedUpgradesDisplay();
 
 // Add event listener for emoji button
 // Every time the button is clicked, the counter is added by 1
 button.addEventListener("click", () => {
-  counter++;
-  counterDisplay.innerHTML = counter.toFixed(2) + " levels completed"; // updated message
+  clickCounter++;
+  counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed"; // updated message
   checkUpgradeAvailability();
 });
 
@@ -123,24 +127,30 @@ availableItems.forEach((item) => {
   upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec) - ${item.description}`;
   upgradeButton.disabled = true;
 
+  // Function to calculate the new cost of an item
+const calculateNewCost = (currentCost: number) => {
+  const increaseFactor = 1.5; // Can be easily adjusted or sourced from config
+  return currentCost * increaseFactor;
+};
+
   // Create event listener for the event listener for buying upgrades
   // counter has to be less than the cost
   // if it is less than the cost then the cost is subtracted to the counter,
   // and the purchase number and the growth rate increases
   upgradeButton.addEventListener("click", () => {
-    if (counter >= item.cost) {
-      counter -= item.cost;
+    if (clickCounter >= item.cost) {
+      clickCounter -= item.cost;
       purchasesCount[item.name]++; // Increment purchase count for the item
       growthRate += item.rate;
 
       // Increase cost for next purchase
       // Increase it by a factor of 1.5
-      item.cost *= 1.5;
+      item.cost = calculateNewCost(item.cost);
 
       // Display the counter and growth rate display
-      counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
+      counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
       growthRateDisplay.innerHTML =
-        "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+      "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
 
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
@@ -153,26 +163,26 @@ availableItems.forEach((item) => {
 // checks if upgraded buttons should be available/enabled
 const checkUpgradeAvailability = () => {
   upgradeButtons.forEach((button, index) => {
-    button.disabled = counter < availableItems[index].cost;
+    button.disabled = clickCounter < availableItems[index].cost;
   });
 };
 
 // calculates the time in units/secs
 function updateCounter(timestamp: number) {
-  if (start !== null) {
+  if (lastTimeStamp !== null) {
     // Calculate the time difference since the last frame
-    const elapsed = (timestamp - start) / 1000; // Time in seconds
+    const elapsed = (timestamp - lastTimeStamp) / 1000; // Time in seconds
 
     // Increment the counter proportionally to the time elapsed
-    counter += elapsed * growthRate; // Increase by the appropriate fraction
+    clickCounter += elapsed * growthRate; // Increase by the appropriate fraction
 
     // Update the display
-    counterDisplay.innerHTML = counter.toFixed(2) + " levels completed";
+    counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
     checkUpgradeAvailability();
   }
 
   // Update the start timestamp to the current one for the next frame
-  start = timestamp;
+  lastTimeStamp = timestamp;
 
   // Request the next animation frame
   requestAnimationFrame(updateCounter);
@@ -183,7 +193,6 @@ requestAnimationFrame(updateCounter);
 
 // Make everything on the webpage centered
 document.body.style.display = "grid";
-// Center items vertically and horizontally
 document.body.style.placeItems = "center";
 // Full height of the viewport
 document.body.style.height = "100vh";
@@ -194,7 +203,7 @@ container.style.display = "flex";
 container.style.flexDirection = "column";
 container.style.alignItems = "center";
 container.style.justifyContent = "center";
-container.style.height = "100vh"; // Full height of the viewport
+container.style.height = "100vh"; 
 
 // Append the buttons and the displays to the body of the document with container
 container.appendChild(button);
