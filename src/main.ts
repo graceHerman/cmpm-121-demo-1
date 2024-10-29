@@ -91,13 +91,14 @@ button.style.backgroundColor = "red";
 button.style.color = "#ffffff";
 
 button.style.position = "absolute";
-button.style.top = "275px"; 
-button.style.left = "50%"; 
+button.style.top = "275px";
+button.style.left = "50%";
 button.style.transform = "translateX(-50%)";
 
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
-growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
+growthRateDisplay.innerHTML =
+  "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
 growthRateDisplay.style.color = "#ffffff";
 
 const PURCHASED_SUFFIX = " purchased: ";
@@ -110,7 +111,9 @@ const purchaseDisplayText = (item: Item, count: number) => {
 // Create display for purchased counts for items
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
-  const displayText = availableItems.map((item) => purchaseDisplayText(item, purchasesCount[item.name])).join("");
+  const displayText = availableItems
+    .map((item) => purchaseDisplayText(item, purchasesCount[item.name]))
+    .join("");
 
   upgradesDisplay.innerHTML = displayText;
   upgradesDisplay.style.color = "#ffffff";
@@ -160,7 +163,8 @@ availableItems.forEach((item) => {
       // Display the counter and growth rate display
       counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated";
       counterDisplay.style.color = "#fffff";
-      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
+      growthRateDisplay.innerHTML =
+        "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
 
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
