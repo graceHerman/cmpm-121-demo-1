@@ -84,8 +84,8 @@ counterDisplay.style.color = "#ffffff";
 // Redesign the button
 const button = document.createElement("button");
 button.innerHTML = "👹";
-button.style.fontSize = "2em";
-button.style.padding = "30px";
+button.style.fontSize = "5em";
+button.style.padding = "20px";
 button.style.borderRadius = "15px";
 button.style.backgroundColor = "red";
 button.style.color = "#ffffff";
