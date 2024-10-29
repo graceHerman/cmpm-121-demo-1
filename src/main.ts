@@ -2,11 +2,12 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My new amazing game 2.0";
+const gameName = "Boss Rush";
 document.title = gameName;
 
 const header = document.createElement("h1");
 header.innerHTML = gameName;
+header.style.color = "#ffffff";
 app.append(header);
 
 // --------------------------------------------------------
@@ -76,36 +77,43 @@ const purchasesCount: { [key: string]: number } = {
 
 // Create div element to display the current counter value
 const counterDisplay = document.createElement("div");
-counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
+counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated";
+counterDisplay.style.color = "#ffffff";
 
 // Create the button with the emoji
 // Redesign the button
 const button = document.createElement("button");
-button.innerHTML = "🎮 Enter level";
+button.innerHTML = "🎮 Hit boss enemy";
 button.style.fontSize = "2em";
-button.style.padding = "20px";
+button.style.padding = "30px";
 button.style.borderRadius = "15px";
+button.style.backgroundColor = "red";
+button.style.color = "#ffffff";
+
+button.style.position = "absolute";
+button.style.top = "275px"; 
+button.style.left = "50%"; 
+button.style.transform = "translateX(-50%)";
 
 // Create display for current growth rate
 const growthRateDisplay = document.createElement("div");
-growthRateDisplay.innerHTML =
-  "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
+growthRateDisplay.style.color = "#ffffff";
 
 const PURCHASED_SUFFIX = " purchased: ";
 
 // Helper Function
 const purchaseDisplayText = (item: Item, count: number) => {
-    return `${item.name}${PURCHASED_SUFFIX}${count}<br>`;
+  return `${item.name}${PURCHASED_SUFFIX}${count}<br>`;
 };
 
 // Create display for purchased counts for items
 const upgradesDisplay = document.createElement("div");
 const updatedUpgradesDisplay = () => {
-  const displayText = availableItems.map(item => 
-    purchaseDisplayText(item, purchasesCount[item.name])
-    ).join('');
+  const displayText = availableItems.map((item) => purchaseDisplayText(item, purchasesCount[item.name])).join("");
 
-    upgradesDisplay.innerHTML = displayText;
+  upgradesDisplay.innerHTML = displayText;
+  upgradesDisplay.style.color = "#ffffff";
 };
 updatedUpgradesDisplay();
 
@@ -113,7 +121,7 @@ updatedUpgradesDisplay();
 // Every time the button is clicked, the counter is added by 1
 button.addEventListener("click", () => {
   clickCounter++;
-  counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed"; // updated message
+  counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated"; // updated message
   checkUpgradeAvailability();
 });
 
@@ -124,14 +132,16 @@ const upgradeButtons: HTMLButtonElement[] = [];
 // Display the upgrade button for each item
 availableItems.forEach((item) => {
   const upgradeButton = document.createElement("button");
-  upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} levels/sec) - ${item.description}`;
+  upgradeButton.innerHTML = `💡 Buy ${item.name} (+${item.rate} hits/sec) - ${item.description}`;
   upgradeButton.disabled = true;
+  upgradeButton.style.backgroundColor = "red";
+  upgradeButton.style.color = "#ffffff";
 
   // Function to calculate the new cost of an item
-const calculateNewCost = (currentCost: number) => {
-  const increaseFactor = 1.5; // Can be easily adjusted or sourced from config
-  return currentCost * increaseFactor;
-};
+  const calculateNewCost = (currentCost: number) => {
+    const increaseFactor = 1.5; // Can be easily adjusted or sourced from config
+    return currentCost * increaseFactor;
+  };
 
   // Create event listener for the event listener for buying upgrades
   // counter has to be less than the cost
@@ -148,9 +158,9 @@ const calculateNewCost = (currentCost: number) => {
       item.cost = calculateNewCost(item.cost);
 
       // Display the counter and growth rate display
-      counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
-      growthRateDisplay.innerHTML =
-      "Growth rate: " + growthRate.toFixed(2) + " levels/sec";
+      counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated";
+      counterDisplay.style.color = "#fffff";
+      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
 
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
@@ -177,7 +187,7 @@ function updateCounter(timestamp: number) {
     clickCounter += elapsed * growthRate; // Increase by the appropriate fraction
 
     // Update the display
-    counterDisplay.innerHTML = clickCounter.toFixed(2) + " levels completed";
+    counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated";
     checkUpgradeAvailability();
   }
 
@@ -196,6 +206,7 @@ document.body.style.display = "grid";
 document.body.style.placeItems = "center";
 // Full height of the viewport
 document.body.style.height = "100vh";
+document.body.style.backgroundColor = "#4d4d4d";
 
 // Create a container div to center the button and counter display
 const container = document.createElement("div");
@@ -203,7 +214,7 @@ container.style.display = "flex";
 container.style.flexDirection = "column";
 container.style.alignItems = "center";
 container.style.justifyContent = "center";
-container.style.height = "100vh"; 
+container.style.height = "100vh";
 
 // Append the buttons and the displays to the body of the document with container
 container.appendChild(button);
