@@ -163,7 +163,8 @@ availableItems.forEach((item) => {
       // Display the counter and growth rate display
       counterDisplay.innerHTML = clickCounter.toFixed(2) + " bosses defeated";
       counterDisplay.style.color = "#fffff";
-      growthRateDisplay.innerHTML = "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
+      growthRateDisplay.innerHTML =
+        "Growth rate: " + growthRate.toFixed(2) + " hits/sec";
 
       updatedUpgradesDisplay(); // Update the display of purchases
       checkUpgradeAvailability(); // Check button availability
