@@ -2,4 +2,4 @@ This is the starter code project for the `Demo 1` project in CMPM 121, Game Desi
 
 Background color and button color changed inspired by Yingting's project: https://yingting1018.github.io/cmpm-121-demo-1/ 
 
-Button displayed inspired by JcGracey1 project: https://jcgracey1.github.io/cmpm-121-demo-1/ 
+Main button displayed inspired by staypat: https://github.com/staypat/cmpm-121-demo-1 
